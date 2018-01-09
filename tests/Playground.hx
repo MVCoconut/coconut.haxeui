@@ -3,6 +3,7 @@ package;
 // import coconut.Ui.*;
 import coconut.haxeui.*;
 import haxe.ui.diff.Diff.*;
+import Playground.*;
 
 import haxe.ui.*;
 import haxe.ui.core.*;
@@ -13,15 +14,23 @@ class Playground {
 		Screen.instance.addComponent(new MyView({}).toComponent());
 	}
 	
-	public static function button(attr:{text:String}, children)
+	public static function vbox(attr:{}, children)
+		return h('vbox', attr, children);
+	public static function button(attr:{text:String, onClick:MouseEvent->Void}, children)
 		return h('button', attr, children);
+	public static function label(attr:{text:String}, children)
+		return h('label', attr, children);
 }
 
 class MyView extends coconut.ui.View<{}> {
 	@:state var counter:Int = 0;
+	@:state var click:Int = 0;
 	
 	function render() {
-		return Playground.button({text: 'Button $counter'}, []);
+		return vbox({}, [
+			button({text: 'Button $counter', onClick: function(e) click++}, []),
+			label({text: 'Clicked $click times'}, []),
+		]);
 	}
 	
 	override function afterInit(c) {
