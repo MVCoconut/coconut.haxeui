@@ -16,7 +16,7 @@ class Playground {
 	
 	public static function vbox(attr:{}, children)
 		return h('vbox', attr, children);
-	public static function button(attr:{text:String, onClick:MouseEvent->Void}, children)
+	public static function button(attr:{text:String, ?onClick:MouseEvent->Void}, children)
 		return h('button', attr, children);
 	public static function label(attr:{text:String}, children)
 		return h('label', attr, children);
@@ -30,6 +30,7 @@ class MyView extends coconut.ui.View<{}> {
 		return vbox({}, [
 			button({text: 'Button $counter', onClick: function(e) click++}, []),
 			label({text: 'Clicked $click times'}, []),
+			Widget(new ComplexButton({title: 'Complex Button $counter'})), // cache this somehow?
 		]);
 	}
 	
@@ -38,4 +39,8 @@ class MyView extends coconut.ui.View<{}> {
 			counter = counter + 1;
 		}
 	}
+}
+
+class ComplexButton extends coconut.ui.View<{title:String}> {
+	function render() return button({text: title}, []);
 }

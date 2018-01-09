@@ -8,10 +8,9 @@ import tink.state.*;
 
 using tink.CoreApi;
 
-class Renderable {
+class Renderable implements Widget {
   
   @:noCompletion var __rendered:Observable<Node>;
-  @:noCompletion var __container:Component;
   @:noCompletion var __component:Component;
   @:noCompletion var __binding:CallbackLink;
   @:noCompletion var __lastRender:Node;
@@ -27,12 +26,11 @@ class Renderable {
     // this.key = key;
   }
         
-  @:noCompletion public function init():Component {
+  @:noCompletion public function initComponent():Component {
     __lastRender = __rendered;
     this.beforeInit();
-    this.__container = new Component();
-	__component = createElement(__lastRender);
-	__container.addComponent(__component);
+    this.__component = new Component();
+    __component.addComponent(createElement(__lastRender));
     this.afterInit(__component);
     __setupBinding();
     
@@ -46,14 +44,14 @@ class Renderable {
   
   @:noCompletion function __apply(next) {
     beforePatching(this.__component);
-    updateElement(__container, next, __lastRender);
+    updateElement(__component, next, __lastRender);
     __lastRender = next;
     afterPatching(this.__component);
   }
     
   public function toComponent() 
     return switch __component {
-      case null: init();
+      case null: initComponent();
       case v: v;
     } 
 
