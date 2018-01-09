@@ -1,0 +1,4 @@
+-cp src
+
+-lib coconut.ui
+-lib haxeui-diff
