@@ -106,9 +106,6 @@ class Renderable implements Widget {
 
 #else
 class Renderable {
- 
-  macro function get(_, e) 
-    return coconut.vdom.macros.Select.typed(e);
   macro function hxx(_, e) 
     return 
       #if coconut_ui

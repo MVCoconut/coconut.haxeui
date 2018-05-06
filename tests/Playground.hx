@@ -2,6 +2,7 @@ package;
 
 // import coconut.Ui.*;
 import coconut.haxeui.*;
+import coconut.ui.*;
 import haxe.ui.diff.Diff.*;
 import Playground.*;
 
@@ -14,33 +15,39 @@ class Playground {
 		Screen.instance.addComponent(new MyView({}).toComponent());
 	}
 	
-	public static function vbox(attr:{}, children)
-		return h('vbox', attr, children);
-	public static function button(attr:{text:String, ?onClick:MouseEvent->Void}, children)
-		return h('button', attr, children);
-	public static function label(attr:{text:String}, children)
-		return h('label', attr, children);
+	public static function vbox(attr:{}, children:Children)
+		return h('vbox', attr, cast children);
+
+	public static function button(attr:{text:String, ?onClick:MouseEvent->Void})
+		return h('button', attr, EMPTY);
+
+	public static function label(attr:{text:String})
+		return h('label', attr, EMPTY);
+
+	static var EMPTY = [];
 }
 
-class MyView extends coconut.ui.View<{}> {
+class MyView extends coconut.ui.View {
 	@:state var counter:Int = 0;
 	@:state var click:Int = 0;
 	
-	function render() {
-		return vbox({}, [
-			button({text: 'Button $counter', onClick: function(e) click++}, []),
-			label({text: 'Clicked $click times'}, []),
-			Widget(new ComplexButton({title: 'Complex Button $counter'})), // cache this somehow?
-		]);
-	}
+	function render() '
+		<vbox>
+			<button text="Button $counter" onClick={click++} />
+			<label text="Clicked $click times" />
+			<ComplexButton title="Complex Button $counter" />
+		</vbox>
+	';
 	
 	override function afterInit(c) {
 		new haxe.Timer(1000).run = function() {
-			counter = counter + 1;
+			counter += 1;
 		}
 	}
 }
 
-class ComplexButton extends coconut.ui.View<{title:String}> {
-	function render() return button({text: title}, []);
+class ComplexButton extends coconut.ui.View {
+	@:attribute var title:String;
+	function render() '<button text=$title />';
+
 }

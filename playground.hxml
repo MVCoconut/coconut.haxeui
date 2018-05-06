@@ -1,5 +1,6 @@
 -cp tests
 -main Playground
+-dce full
 -js bin/index.js
 
 -lib coconut.haxeui
