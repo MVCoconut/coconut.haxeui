@@ -1,6 +1,6 @@
-# @install: lix --silent download "https://github.com/haxeui/haxeui-html5/archive/6b5d8d96b180b86ceb470bd355adb28cbd384adf.tar.gz" into haxeui-html5/0.0.1/github/6b5d8d96b180b86ceb470bd355adb28cbd384adf
--D haxeui-html5=0.0.1
--cp ${HAXESHIM_LIBCACHE}/haxeui-html5/0.0.1/github/6b5d8d96b180b86ceb470bd355adb28cbd384adf/
+# @install: lix --silent download "haxelib:haxeui-html5#0.0.2" into haxeui-html5/0.0.2/haxelib
+-D haxeui-html5=0.0.2
+-cp ${HAXE_LIBCACHE}/haxeui-html5/0.0.2/haxelib/
 --macro include("haxe.ui.backend.html5.native")
 --macro include("haxe.ui.backend.html5.native.behaviours")
 --macro include("haxe.ui.backend.html5.native.layouts")
