@@ -8,9 +8,6 @@ import haxe.ui.containers.*;
 typedef Props = DynamicAccess<Dynamic>;
 
 class Diff {
-	// public static inline function h(type:String, props:{}, children:Array<Node>):Node {
-	// 	return Node(type, props, children);
-	// }
 	
 	public static function createElement(node:Node) {
 		

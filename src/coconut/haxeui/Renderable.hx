@@ -2,8 +2,6 @@ package coconut.haxeui;
 
 #if !macro
 import haxe.ui.core.Component;
-// import haxe.ui.diff.Diff.*;
-// import haxe.ui.diff.*;
 import tink.state.*;
 
 using tink.CoreApi;
@@ -20,10 +18,6 @@ class Renderable {
   
   public function new(rendered, ?key:String) {
     this.__rendered = rendered;
-    // if (key == null)
-    //   key = __rendered;
-      
-    // this.key = key;
   }
         
   @:noCompletion public function initComponent():Component {
@@ -105,7 +99,9 @@ class Renderable {
 
 #else
 class Renderable {
+
   macro function hxx(_, e) 
     return coconut.ui.macros.HXX.parse(e);
+
 }
 #end

@@ -13,14 +13,14 @@ class Playground {
 		Screen.instance.addComponent(new MyView({}).toComponent());
 	}
 	
-	static public function vbox(attr:{}, children:Children)
-		return Node.make(haxe.ui.containers.VBox, attr, children);
+	// static public function vbox(attr:{}, children:Children)
+	// 	return Node.make(haxe.ui.containers.VBox, attr, children);
 
-	static public function button(attr:{text:String, ?onClick:MouseEvent->Void})
-		return Node.make(haxe.ui.components.Button, attr);
+	// static public function button(attr:{text:String, ?onClick:MouseEvent->Void})
+	// 	return Node.make(haxe.ui.components.Button, attr);
 
-	static public function label(attr:{text:String})
-		return Node.make(haxe.ui.components.Label, attr);
+	// static public function label(attr:{text:String})
+	// 	return Node.make(haxe.ui.components.Label, attr);
 
 	static var EMPTY = [];
 }
@@ -30,11 +30,11 @@ class MyView extends coconut.ui.View {
 	@:state var click:Int = 0;
 	
 	function render() '
-		<vbox>
-			<button text="Button $counter" onClick={click++} />
-			<label text="Clicked $click times" />
+		<VBox>
+			<Button text="Button $counter" onClick={click++} />
+			<Label text="Clicked $click times" />
 			<ComplexButton title="Complex Button $counter" />
-		</vbox>
+		</VBox>
 	';
 	
 	override function afterInit(c) {
@@ -46,6 +46,6 @@ class MyView extends coconut.ui.View {
 
 class ComplexButton extends coconut.ui.View {
 	@:attribute var title:String;
-	function render() '<button text=$title />';
+	function render() '<Button text=$title />';
 
 }

@@ -1,7 +1,6 @@
 package coconut.haxeui;
 
-typedef NodeType = Class<haxe.ui.core.Component>;
-
+@:build(coconut.haxeui.macros.Nodes.build())
 @:pure class Node {
   
   public var type(default, null):NodeType;
@@ -11,16 +10,19 @@ typedef NodeType = Class<haxe.ui.core.Component>;
 
   function new() {}
 
-  static public function make(type, attributes, ?children) {
+  static function make(type, attributes, ?children) {
     var ret = new Node();
     ret.type = type;
     ret.attributes = attributes;
     ret.children = children;
     return ret;
   }
-  static public inline function ofView(v:coconut.ui.View) {
+  
+  static inline function ofView(v:coconut.ui.View) {
     var ret = new Node();
     ret.view = v;
     return ret;
   }
 }
+
+typedef NodeType = Class<haxe.ui.core.Component>;
