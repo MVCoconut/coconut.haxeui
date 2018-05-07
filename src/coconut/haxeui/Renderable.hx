@@ -2,13 +2,13 @@ package coconut.haxeui;
 
 #if !macro
 import haxe.ui.core.Component;
-import haxe.ui.diff.Diff.*;
-import haxe.ui.diff.*;
+// import haxe.ui.diff.Diff.*;
+// import haxe.ui.diff.*;
 import tink.state.*;
 
 using tink.CoreApi;
 
-class Renderable implements Widget {
+class Renderable {
   
   @:noCompletion var __rendered:Observable<Node>;
   @:noCompletion var __component:Component;
@@ -30,7 +30,7 @@ class Renderable implements Widget {
     __lastRender = __rendered;
     this.beforeInit();
     this.__component = new Component();
-    __component.addComponent(createElement(__lastRender));
+    __component.addComponent(Diff.createElement(__lastRender));
     this.afterInit(__component);
     __setupBinding();
     
@@ -44,7 +44,7 @@ class Renderable implements Widget {
   
   @:noCompletion function __apply(next) {
     beforePatching(this.__component);
-    updateElement(__component, next, __lastRender);
+    Diff.updateElement(__component, next, __lastRender);
     __lastRender = next;
     afterPatching(this.__component);
   }
@@ -78,7 +78,6 @@ class Renderable implements Widget {
     that.destroy();
   }
   
-  macro function get(_, e);
   macro function hxx(e);
 
   @:noCompletion public function destroy():Void {
@@ -107,11 +106,6 @@ class Renderable implements Widget {
 #else
 class Renderable {
   macro function hxx(_, e) 
-    return 
-      #if coconut_ui
-        coconut.ui.macros.HXX.parse(e);
-      #else
-        vdom.VDom.hxx(e);
-      #end
+    return coconut.ui.macros.HXX.parse(e);
 }
 #end

@@ -1,9 +1,7 @@
 package;
 
-// import coconut.Ui.*;
 import coconut.haxeui.*;
 import coconut.ui.*;
-import haxe.ui.diff.Diff.*;
 import Playground.*;
 
 import haxe.ui.*;
@@ -15,14 +13,14 @@ class Playground {
 		Screen.instance.addComponent(new MyView({}).toComponent());
 	}
 	
-	public static function vbox(attr:{}, children:Children)
-		return h('vbox', attr, cast children);
+	static public function vbox(attr:{}, children:Children)
+		return Node.make(haxe.ui.containers.VBox, attr, children);
 
-	public static function button(attr:{text:String, ?onClick:MouseEvent->Void})
-		return h('button', attr, EMPTY);
+	static public function button(attr:{text:String, ?onClick:MouseEvent->Void})
+		return Node.make(haxe.ui.components.Button, attr);
 
-	public static function label(attr:{text:String})
-		return h('label', attr, EMPTY);
+	static public function label(attr:{text:String})
+		return Node.make(haxe.ui.components.Label, attr);
 
 	static var EMPTY = [];
 }

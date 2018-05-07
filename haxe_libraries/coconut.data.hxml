@@ -1,6 +1,6 @@
-# @install: lix --silent download "haxelib:coconut.data#0.5.2" into coconut.data/0.5.2/haxelib
--D coconut.data=0.5.2
--cp ${HAXESHIM_LIBCACHE}/coconut.data/0.5.2/haxelib/src
+# @install: lix --silent download "haxelib:coconut.data#0.6.1" into coconut.data/0.6.1/haxelib
+-D coconut.data=0.6.1
+-cp ${HAXESHIM_LIBCACHE}/coconut.data/0.6.1/haxelib/src
 
 -lib tink_state
 -lib tink_lang

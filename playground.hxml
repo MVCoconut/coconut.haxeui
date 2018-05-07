@@ -1,7 +1,7 @@
 -cp tests
 -main Playground
--dce full
 -js bin/index.js
-
+--macro Macro.check()
 -lib coconut.haxeui
 -lib haxeui-html5
+-dce full

@@ -3,5 +3,3 @@
 -D haxeui-core=0.0.1
 -cp ${HAXESHIM_LIBCACHE}/haxeui-core/0.0.1/github/0b587cbe1fe289106cfbd83b0e2b8288e940bbd7/
 -lib hscript
-
--lib hscript
