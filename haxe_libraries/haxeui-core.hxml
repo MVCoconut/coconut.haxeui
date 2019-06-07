@@ -1,6 +1,6 @@
-# @run: haxelib run-dir haxeui-core ${HAXE_LIBCACHE}/haxeui-core/0.0.3/haxelib
-# @install: lix --silent download "haxelib:haxeui-core#0.0.3" into haxeui-core/0.0.3/haxelib
 -D haxeui-core=0.0.3
--cp ${HAXE_LIBCACHE}/haxeui-core/0.0.3/haxelib/
-
+# @install: lix --silent download "gh://github.com/HaxeUI/haxeui-core#b3e92d9d0dac466103733c9810177032df5c9c19" into haxeui-core/0.0.3/github/b3e92d9d0dac466103733c9810177032df5c9c19
+# @run: haxelib run-dir haxeui-core ${HAXE_LIBCACHE}/haxeui-core/0.0.3/github/b3e92d9d0dac466103733c9810177032df5c9c19
+-lib hscript
+-cp ${HAXE_LIBCACHE}/haxeui-core/0.0.3/github/b3e92d9d0dac466103733c9810177032df5c9c19/
 -lib hscript

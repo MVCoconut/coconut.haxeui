@@ -1,0 +1,5 @@
+-D no-deprecation-warnings
+-lib coconut.haxeui
+-js out.js
+--no-output
+coconut.ui.Renderer

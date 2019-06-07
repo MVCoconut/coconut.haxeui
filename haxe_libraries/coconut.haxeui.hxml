@@ -1,3 +1,4 @@
 -cp src
--lib coconut.ui
+-lib coconut.diffing
+-lib haxeui-html5
 extraParams.hxml
