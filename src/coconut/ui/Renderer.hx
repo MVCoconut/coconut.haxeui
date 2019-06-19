@@ -107,8 +107,8 @@ class HaxeUiNodeType<Attr:{}, Real:Component> implements NodeType<Attr, Real> {
       case null: Reflect.setProperty(target, prop, val);
       case event: 
         if (old != val) {
-          if (old != null) target.unregisterEvent(prop, old);
-          if (val != null) target.registerEvent(prop, val);
+          if (old != null) target.unregisterEvent(event, old);
+          if (val != null) target.registerEvent(event, val);
         }      
     }
 
