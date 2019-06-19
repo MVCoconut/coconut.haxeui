@@ -1,5 +1,6 @@
 -D no-deprecation-warnings
 -lib coconut.haxeui
--js out.js
---no-output
+-js bin/index.js
+-cp tests
+--main Playground
 coconut.ui.Renderer

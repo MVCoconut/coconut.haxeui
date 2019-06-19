@@ -35,14 +35,18 @@ private class HaxeUiCursor implements Cursor<Component> {
 
   public function insert(real:Component):Bool { 
     var inserted = real.parentComponent != container;
-    container.addComponentAt(real, pos);
+    if (inserted)
+      container.addComponentAt(real, pos);
+    else if (container.getComponentAt(pos) != real)
+      container.setComponentIndex(real, pos);
+    pos++;
     return inserted;
   }
 
   public function delete():Bool
     return 
       if (pos <= container.childComponents.length) {
-        container.removeComponent(container.childComponents[pos]);
+        container.removeComponent(current());
         true;
       }
       else false;
@@ -86,21 +90,26 @@ private class HaxeUiBackend implements Applicator<Component> {
 
 class HaxeUiNodeType<Attr:{}, Real:Component> implements NodeType<Attr, Real> {
   
+  static var events = {
+    var ret = coconut.haxeui.macros.Setup.getEvents();
+    trace(ret);
+    ret;
+  }
+
   var factory:Void->Real;
 
   public function new(factory) 
     this.factory = factory;
+    
 
-  function setListener(target, prop, val, old) 
-    if (old != val) {
-      if (old != null) target.removeEventListener(prop, old);
-      if (val != null) target.addEventListener(prop, val);
-    }
-
-  inline function set(target, prop, val, old)
-    switch prop {
-      // case 'on': Differ.updateObject(target, val, old, setListener);
-      default: Reflect.setProperty(target, prop, val);
+  inline function set(target:Real, prop:String, val:Dynamic, old:Dynamic)
+    switch events[prop] {
+      case null: Reflect.setProperty(target, prop, val);
+      case event: 
+        if (old != val) {
+          if (old != null) target.unregisterEvent(prop, old);
+          if (val != null) target.registerEvent(prop, val);
+        }      
     }
 
   public function create(a:Attr):Real {
