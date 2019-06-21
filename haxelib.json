@@ -12,7 +12,6 @@
   "releasenote": "initial release",
   "version": "0.0.0",
   "dependencies": {
-    "haxeui-core": "gh:haxeui/haxeui-core#new-component-method",
-    "haxeui-html5": "gh:haxeui/haxeui-html5#new-component-method"
+    "haxeui-core": "gh:haxeui/haxeui-core#new-component-method"
   }
 }
