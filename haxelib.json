@@ -12,6 +12,7 @@
   "releasenote": "initial release",
   "version": "0.0.0",
   "dependencies": {
-    "haxeui-core": "gh:haxeui/haxeui-core#new-component-method"
+    "haxeui-core": "gh:haxeui/haxeui-core#new-component-method",
+    "coconut.diffing": "gh:MVCoconut/coconut.diffing"
   }
 }
