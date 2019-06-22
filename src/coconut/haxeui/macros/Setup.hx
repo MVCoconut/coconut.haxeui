@@ -24,41 +24,17 @@ class Setup {
     var fields = Context.getBuildFields(),
         cl = Context.getLocalClass().get();
     
-    var attributes = {
-      var ret:Array<Field> = [];
-
-      function crawl(target:ClassType) {
-        for (f in target.fields.get())
-          switch f.kind {
-            case FVar(AccCall, AccCall):
-              ret.push({
-                name: f.name,
-                pos: f.pos,
-                kind: FProp('default', 'never', f.type.toComplex()),
-                meta: [{ name: ':optional', params: [], pos: f.pos }],
-              });
-            default:
-          }
-        if (target.superClass != null)
-          crawl(target.superClass.t.get());//TODO: do something about params
-      }
-      
-      crawl(cl);
-
-      TExtend(['coconut.haxeui.Events'.asTypePath()], ret);
-    }
-
     var self = Context.getLocalType().toComplex();//TODO: type params
 
     return fields.concat((
       macro class {
-        static var COCONUT_NODE_TYPE = new coconut.ui.Renderer.HaxeUiNodeType<$attributes, haxe.ui.core.Component>($i{cl.name}.new);
+        static var COCONUT_NODE_TYPE = new coconut.ui.Renderer.HaxeUiNodeType<coconut.haxeui.macros.Attributes<$self>, haxe.ui.core.Component>($i{cl.name}.new);
         static public inline function fromHxx(
           hxxMeta:{ 
             @:optional var key(default, never):coconut.diffing.Key;
             @:optional var ref(default, never):coconut.ui.Ref<$self>;
           },
-          attr:$attributes, 
+          attr:coconut.haxeui.macros.Attributes<$self>, 
           ?children:coconut.ui.Children):coconut.ui.RenderResult
         {
           return coconut.diffing.VNode.native(COCONUT_NODE_TYPE, cast hxxMeta.ref, hxxMeta.key, attr, children);
