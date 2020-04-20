@@ -90,11 +90,7 @@ private class HaxeUiBackend implements Applicator<Component> {
 
 class HaxeUiNodeType<Attr:{}, Real:Component> implements NodeType<Attr, Real> {
   
-  static var events = {
-    var ret = coconut.haxeui.macros.Setup.getEvents();
-    trace(ret);
-    ret;
-  }
+  static var events = coconut.haxeui.macros.Setup.getEvents();
 
   var factory:Void->Real;
 
