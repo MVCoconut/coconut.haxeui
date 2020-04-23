@@ -1,23 +1,42 @@
 sudo: required
-dist: trusty
+dist: xenial
 
-language: haxe
+# stages:
+#   - test
+#   - deploy
+
+language: node_js
+node_js: 8
+
+cache:
+  directories:
+    - $HOME/haxe
 
 os:
   - linux
-  - osx
-  
-haxe:
-  - "3.4.0"
-  - development
-  
-matrix:
-  allow_failures:
-    - haxe: development
-    
+  # - osx
+
+env:
+  - HAXE_VERSION=latest
+  - HAXE_VERSION=nightly
+
 install:
-  - haxelib install travix
-  - haxelib run travix install
+  - npm i -g lix
+  - lix install haxe $HAXE_VERSION
+  - lix download
 
 script:
-  - haxelib run travix js
+  - lix run travix js
+
+# jobs:
+#   include:
+#     # - stage: test # should uncomment this when there is no matrix above (e.g. only one os, one env, etc)
+#     - stage: deploy
+#       os: linux
+#       install:
+#         - npm i -g lix
+#         - lix download
+#       script: skip
+#       after_success:
+#         - lix run travix install
+#         - lix run travix release

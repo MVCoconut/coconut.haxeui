@@ -1,5 +1,0 @@
-# @install: lix --silent download "https://github.com/kevinresol/haxeui-diff/archive/0a3ab89e60da4853dea936fab9c4ebd01eb32994.tar.gz" into haxeui-diff/0.0.0/github/0a3ab89e60da4853dea936fab9c4ebd01eb32994
--D haxeui-diff=0.0.0
--cp ${HAXESHIM_LIBCACHE}/haxeui-diff/0.0.0/github/0a3ab89e60da4853dea936fab9c4ebd01eb32994/src
-
--lib haxeui-core

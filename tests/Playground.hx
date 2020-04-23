@@ -1,7 +1,7 @@
 package;
 
-import coconut.haxeui.*;
 import coconut.ui.*;
+import coconut.haxeui.*;
 // import Playground.*;
 
 import haxe.ui.*;
@@ -11,27 +11,27 @@ import haxe.ui.containers.*;
 
 class Playground {
 	static function main() {
-		
-		
+
+
 		var root = new Component();
 		Screen.instance.addComponent(root);
 		root.width = 500;
 		root.height = 500;
-		coconut.ui.Renderer.mount(
+		Renderer.mount(
 			root,
-			coconut.Ui.hxx('<MyView />')
+			'<MyView />'
 		);
-		
+
 		Toolkit.init();
 	}
 
 	static var EMPTY = [];
 }
 
-class MyView extends coconut.ui.View {
+class MyView extends View {
 	@:state var counter:Int = 0;
 	@:state var click:Int = 0;
-	
+
 	function render() '
 		<VBox>
 			<Button text="Button $counter" onClick=${click++} />
@@ -39,7 +39,7 @@ class MyView extends coconut.ui.View {
 			<ComplexButton title="Complex Button $counter" />
 		</VBox>
 	';
-	
+
 	override function viewDidMount() {
 		new haxe.Timer(1000).run = function() {
 			counter += 1;
@@ -47,7 +47,7 @@ class MyView extends coconut.ui.View {
 	}
 }
 
-class ComplexButton extends coconut.ui.View {
+class ComplexButton extends View {
 	@:attribute var title:String;
 	function render() '<Button text=$title />';
 
