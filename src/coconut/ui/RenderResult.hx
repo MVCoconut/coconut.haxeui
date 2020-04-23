@@ -1,3 +1,3 @@
 package coconut.ui;
 
-typedef RenderResult = coconut.diffing.VNode<haxe.ui.core.Component>;
+typedef RenderResult = coconut.haxeui.RenderResult;
