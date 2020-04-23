@@ -35,7 +35,7 @@ class Setup {
             @:optional var ref(default, never):coconut.ui.Ref<$self>;
           },
           attr:coconut.haxeui.macros.Attributes<$self>,
-          ?children:coconut.ui.Children):coconut.ui.RenderResult
+          ?children:coconut.haxeui.Children):coconut.haxeui.RenderResult
         {
           return coconut.diffing.VNode.native(COCONUT_NODE_TYPE, cast hxxMeta.ref, hxxMeta.key, attr, children);
         }

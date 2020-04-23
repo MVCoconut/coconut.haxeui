@@ -7,7 +7,7 @@ class Renderer {
 
   static var DIFFER = new coconut.diffing.Differ(new HaxeUiBackend());
 
-  static public function mount(target:Component, virtual:RenderResult)
+  static public function mountInto(target:Component, virtual:RenderResult)
     DIFFER.render([virtual], target);
 
   static public function getNative(view:View):Null<Component>
@@ -21,6 +21,10 @@ class Renderer {
 
   static public inline function updateAll()
     tink.state.Observable.updateAll();
+
+  static public macro function hxx(e);
+
+  static public macro function mount(target, markup);
 }
 
 private class HaxeUiCursor implements Cursor<Component> {
