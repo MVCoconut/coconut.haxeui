@@ -1,5 +1,4 @@
-# @run: haxelib run-dir hscript ${HAXESHIM_LIBCACHE}/hscript/2.1.1/haxelib
-# @install: lix --silent download "haxelib:hscript#2.1.1" into hscript/2.1.1/haxelib
--D hscript=2.1.1
--cp ${HAXESHIM_LIBCACHE}/hscript/2.1.1/haxelib/
+# @install: lix --silent download "haxelib:/hscript#2.4.0" into hscript/2.4.0/haxelib
+-cp ${HAXE_LIBCACHE}/hscript/2.4.0/haxelib/
+-D hscript=2.4.0
 --macro keep('IntIterator')
