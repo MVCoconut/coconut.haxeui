@@ -32,6 +32,19 @@ class Attributes<T> {
       }
         
       crawl(ctx.type.getClass());
+      
+      // special handling for style and customStyle
+      fields = fields.filter(f -> f.name != 'style');
+      fields.push({
+        name: 'customStyle',
+        pos: (macro null).pos,
+        kind: FProp('default', 'never', macro:haxe.ui.styles.Style),
+        meta: [
+          { name: ':optional', params: [], pos: (macro null).pos },
+          { name: ':hxx', params: [macro style], pos: (macro null).pos },
+        ],
+      });
+      
 
       return {
         name: ctx.name,
