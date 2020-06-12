@@ -1,4 +1,1 @@
 --macro coconut.haxeui.macros.Setup.all()
-
-# for reflection in coconut.diffing, perhaps can refine packages to e.g. haxe.ui.components
---macro addGlobalMetadata('haxe.ui', '@:keep', true, true)

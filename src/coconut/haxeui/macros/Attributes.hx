@@ -16,34 +16,27 @@ class Attributes<T> {
       var fields:Array<Field> = [];
 
       function crawl(target:ClassType) {
-        for (f in target.fields.get())
-          switch f.kind {
-            case FVar(AccCall, AccCall):
-              fields.push({
-                name: f.name,
-                pos: f.pos,
-                kind: FProp('default', 'never', f.type.toComplex()),
-                meta: [{ name: ':optional', params: [], pos: f.pos }],
-              });
-            default:
+        for (f in target.fields.get()) {
+          if(f.name == 'style') continue;
+          if(f.name == 'customStyle' || f.kind.match(FVar(AccCall, AccCall))) {
+            if(!f.meta.has(':keep')) f.meta.add(':keep', [], f.pos);
+            var field;
+            fields.push(field = {
+              name: f.name,
+              pos: f.pos,
+              kind: FProp('default', 'never', f.type.toComplex()),
+              meta: [{ name: ':optional', params: [], pos: f.pos }],
+            });
+            
+            if(f.name == 'customStyle')
+              field.meta.push({ name: ':hxx', params: [macro style], pos: f.pos });
           }
+        }
         if (target.superClass != null)
           crawl(target.superClass.t.get());//TODO: do something about params
       }
         
       crawl(ctx.type.getClass());
-      
-      // special handling for style and customStyle
-      fields = fields.filter(f -> f.name != 'style');
-      fields.push({
-        name: 'customStyle',
-        pos: (macro null).pos,
-        kind: FProp('default', 'never', macro:haxe.ui.styles.Style),
-        meta: [
-          { name: ':optional', params: [], pos: (macro null).pos },
-          { name: ':hxx', params: [macro style], pos: (macro null).pos },
-        ],
-      });
       
 
       return {
