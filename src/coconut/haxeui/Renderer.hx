@@ -46,23 +46,12 @@ private class HaxeUiCursor implements Cursor<Component> {
     pos++;
   }
 
-  public function delete(count) {
-
-  }
-  //   return
-  //     if (pos <= container.childComponents.length) {
-  //       container.removeComponent(current());
-  //       true;
-  //     }
-  //     else false;
-
-  // public function step():Bool
-  //   return
-  //     if (pos >= container.childComponents.length) false;
-  //     else ++pos == container.childComponents.length;
-
-  // public function current():Component
-  //   return container.getComponentAt(pos);
+  public function delete(count)
+    if (pos == 0 && count == container.numComponents)
+      container.removeAllComponents();
+    else
+      while (count --> 0)
+        container.removeComponentAt(pos, true, count == 0);// only the last removal needs to trigger invalidation
 }
 
 private class HaxeUiBackend implements Applicator<Component> {
@@ -72,7 +61,7 @@ private class HaxeUiBackend implements Applicator<Component> {
     return new HaxeUiCursor(this, target.parentComponent, target.parentComponent.getComponentIndex(target));
 
   public function children(target:Component):Cursor<Component>
-    return new HaxeUiCursor(this, cast target, 0);
+    return new HaxeUiCursor(this, target, 0);
 
   static final POOL = [];
   public function createMarker()
