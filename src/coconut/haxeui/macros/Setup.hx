@@ -28,7 +28,7 @@ class Setup {
 
     return fields.concat((
       macro class {
-        static var COCONUT_NODE_TYPE = new coconut.haxeui.Renderer.HaxeUiNodeType<coconut.haxeui.macros.Attributes<$self>, haxe.ui.core.Component>($i{cl.name}.new);
+        static var COCONUT_NODE_TYPE = new coconut.haxeui.Renderer.HaxeUiNodeType<coconut.haxeui.macros.Attributes<$self>, $self>($i{cl.name}.new);
         static public inline function fromHxx(
           hxxMeta:{
             @:optional var key(default, never):coconut.diffing.Key;
@@ -37,7 +37,7 @@ class Setup {
           attr:coconut.haxeui.macros.Attributes<$self>,
           ?children:coconut.haxeui.Children):coconut.haxeui.RenderResult
         {
-          return coconut.diffing.VNode.native(COCONUT_NODE_TYPE, cast hxxMeta.ref, hxxMeta.key, attr, children);
+          return COCONUT_NODE_TYPE.vnode(attr, hxxMeta.key, hxxMeta.ref, children);
         }
       }
     ).fields);

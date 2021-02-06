@@ -1,23 +1,21 @@
 package coconut.haxeui;
 
+import coconut.diffing.Factory;
 import coconut.diffing.*;
 import haxe.ui.core.*;
 
 class Renderer {
 
-  static var DIFFER = new coconut.diffing.Differ(new HaxeUiBackend());
+  static final BACKEND = new HaxeUiBackend();
 
   static public function mountInto(target:Component, virtual:RenderResult)
-    DIFFER.render([virtual], target);
+    Root.fromNative(target, BACKEND).render(virtual);
 
   static public function getNative(view:View):Null<Component>
     return getAllNative(view)[0];
 
   static public function getAllNative(view:View):Array<Component>
-    return switch @:privateAccess view._coco_lastRender {
-      case null: [];
-      case r: r.flatten(null);
-    }
+    return Widget.getAllNative(view);
 
   static public inline function updateAll()
     tink.state.Observable.updateAll();
@@ -30,94 +28,88 @@ class Renderer {
 private class HaxeUiCursor implements Cursor<Component> {
 
   var pos:Int;
-  var container:Component;
+  final container:Component;
+  public final applicator:Applicator<Component>;
 
-  public function new(container:Component, pos:Int) {
+  public function new(applicator, container:Component, pos:Int) {
+    this.applicator = applicator;
     this.container = container;
     this.pos = pos;
   }
 
-  public function insert(real:Component):Bool {
+  public function insert(real:Component) {
     var inserted = real.parentComponent != container;
     if (inserted)
       container.addComponentAt(real, pos);
     else if (container.getComponentAt(pos) != real)
       container.setComponentIndex(real, pos);
     pos++;
-    return inserted;
   }
 
-  public function delete():Bool
-    return
-      if (pos <= container.childComponents.length) {
-        container.removeComponent(current());
-        true;
-      }
-      else false;
+  public function delete(count) {
 
-  public function step():Bool
-    return
-      if (pos >= container.childComponents.length) false;
-      else ++pos == container.childComponents.length;
+  }
+  //   return
+  //     if (pos <= container.childComponents.length) {
+  //       container.removeComponent(current());
+  //       true;
+  //     }
+  //     else false;
 
-  public function current():Component
-    return container.getComponentAt(pos);
+  // public function step():Bool
+  //   return
+  //     if (pos >= container.childComponents.length) false;
+  //     else ++pos == container.childComponents.length;
+
+  // public function current():Component
+  //   return container.getComponentAt(pos);
 }
 
 private class HaxeUiBackend implements Applicator<Component> {
   public function new() {}
-  var registry:Map<Component, Rendered<Component>> = new Map();
 
-  public function unsetLastRender(target:Component):Rendered<Component> {
-    var ret = registry[target];
-    registry.remove(target);
-    return ret;
-  }
+  public function siblings(target:Component):Cursor<Component>
+    return new HaxeUiCursor(this, target.parentComponent, target.parentComponent.getComponentIndex(target));
 
-  public function setLastRender(target:Component, r:Rendered<Component>):Void
-    registry[target] = r;
+  public function children(target:Component):Cursor<Component>
+    return new HaxeUiCursor(this, cast target, 0);
 
-  public function getLastRender(target:Component):Null<Rendered<Component>>
-    return registry[target];
+  static final POOL = [];
+  public function createMarker()
+    return switch POOL.pop() {
+      case null: new Component();
+      case v: v;
+    }
 
-  public function traverseSiblings(target:Component):Cursor<Component>
-    return new HaxeUiCursor(target.parentComponent, target.parentComponent.getComponentIndex(target));
-
-  public function traverseChildren(target:Component):Cursor<Component>
-    return new HaxeUiCursor(cast target, 0);
-
-  public function placeholder(forTarget:Widget<Component>):VNode<Component>
-    return VNode.native(PLACEHOLDER, null, null, null, null);
-
-  static final PLACEHOLDER = new HaxeUiNodeType(Component.new);
+  public function releaseMarker(c:Component)
+    POOL.push(c);
 }
 
-class HaxeUiNodeType<Attr:{}, Real:Component> implements NodeType<Attr, Real> {
+class HaxeUiNodeType<Attr:{}, Real:Component> implements Factory<Attr, Component, Real> {
 
   static var events = coconut.haxeui.macros.Setup.getEvents();
 
   var factory:Void->Real;
 
+  public final type = new TypeId();
+
   public function new(factory)
     this.factory = factory;
-
 
   inline function set(target:Real, prop:String, val:Dynamic, old:Dynamic)
     switch events[prop] {
       case null: Reflect.setProperty(target, prop, val);
       case event:
-        if (old != val) {
-          if (old != null) target.unregisterEvent(event, old);
-          if (val != null) target.registerEvent(event, val);
-        }
+        if (old != null) target.unregisterEvent(event, old);
+        if (val != null) target.registerEvent(event, val);
     }
 
   public function create(a:Attr):Real {
     var ret = factory();
-    Differ.updateObject(ret, a, null, set);
+    update(ret, a, null);
     return ret;
   }
 
-  public function update(r:Real, old:Attr, nu:Attr):Void
-    Differ.updateObject(r, nu, old, set);
+  public function update(r:Real, nu:Attr, old:Attr):Void
+    Properties.set(r, nu, old, set);
 }
