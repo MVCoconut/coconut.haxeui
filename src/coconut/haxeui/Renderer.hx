@@ -25,14 +25,13 @@ class Renderer {
   static public macro function mount(target, markup);
 }
 
-private class HaxeUiCursor implements Cursor<Component> {
+private class HaxeUiCursor extends Cursor<Component> {
 
   var pos:Int;
   final container:Component;
-  public final applicator:Applicator<Component>;
 
   public function new(applicator, container:Component, pos:Int) {
-    this.applicator = applicator;
+    super(applicator);
     this.container = container;
     this.pos = pos;
   }
@@ -74,13 +73,11 @@ private class HaxeUiBackend implements Applicator<Component> {
     POOL.push(c);
 }
 
-class HaxeUiNodeType<Attr:{}, Real:Component> implements Factory<Attr, Component, Real> {
+class HaxeUiNodeType<Attr:{}, Real:Component> extends Factory<Attr, Component, Real> {
 
   static var events = coconut.haxeui.macros.Setup.getEvents();
 
-  var factory:Void->Real;
-
-  public final type = new TypeId();
+  final factory:Void->Real;
 
   public function new(factory)
     this.factory = factory;
