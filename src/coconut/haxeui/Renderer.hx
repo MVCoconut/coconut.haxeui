@@ -45,8 +45,9 @@ private class HaxeUiCursor extends Cursor<Component> {
     pos++;
   }
 
-  public function delete(count)
-    if (pos == 0 && count == container.numComponents)
+  public function delete(count:Int)
+    if (count == 0) return
+    else if (pos == 0 && count == container.numComponents)
       container.removeAllComponents();
     else
       while (count --> 0)
