@@ -38,8 +38,12 @@ private class HaxeUiCursor extends Cursor<Component> {
 
   public function insert(real:Component) {
     var inserted = real.parentComponent != container;
-    if (inserted)
+
+    if (inserted) {
       container.addComponentAt(real, pos);
+      if (real.customStyle != null)
+        @:privateAccess real.applyStyle(real.customStyle);
+    }
     else if (container.getComponentAt(pos) != real)
       container.setComponentIndex(real, pos);
     pos++;
