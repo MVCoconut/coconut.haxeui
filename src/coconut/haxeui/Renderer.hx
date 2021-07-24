@@ -41,6 +41,7 @@ private class HaxeUiCursor extends Cursor<Component> {
 
     if (inserted) {
       container.addComponentAt(real, pos);
+      @:privateAccess real.applyStyle(real.customStyle);
     }
     else if (container.getComponentAt(pos) != real)
       container.setComponentIndex(real, pos);
