@@ -87,18 +87,23 @@ class HaxeUiNodeType<Attr:{}, Real:Component> extends Factory<Attr, Component, R
     this.factory = factory;
 
   inline function set(target:Real, prop:String, val:Dynamic, old:Dynamic) {
-	if (prop == "customStyle") {
-		for (k in Reflect.fields(val)) {
-			var value = Reflect.field(val, k);
-			var oldValue = old == null ? null : Reflect.field(old, k);
-			if (value == oldValue) continue;
-			if (Std.is(value, Bool) && value == false && oldValue == null) continue;
+    if (prop == "customStyle") {
+        var needsInvalidation = false;
 
-			Reflect.setProperty(target.customStyle, k, value);
-		}
+        for (k in Reflect.fields(val)) {
+            var value = Reflect.field(val, k);
+            var oldValue = old == null ? null : Reflect.field(old, k);
 
-		return;
-	}
+            if (value == oldValue) continue;
+            if (Std.is(value, Bool) && value == false && oldValue == null) continue;
+
+            needsInvalidation = true;
+            Reflect.setProperty(target.customStyle, k, value);
+        }
+
+        if (needsInvalidation) target.invalidateComponentStyle();
+        return;
+    }
 
     switch events[prop] {
       case null: Reflect.setProperty(target, prop, val);
