@@ -37,7 +37,7 @@ private class HaxeUiCursor extends Cursor<Component> {
   }
 
   public function insert(real:Component) {
-    var inserted = real.parentComponent != container;
+    var inserted = container.getComponentIndex(real) == -1;
 
     if (inserted) {
       container.addComponentAt(real, pos);
